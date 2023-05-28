@@ -24,8 +24,9 @@ app.use(
     //   httpOnly: true,
     //   secure: process.env.APP_ENV !== "local" ? true : false,
     //   domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
-      // sameSite: "none",
+    // sameSite: "none",
     // },
+    cookie: { httpOnly: true, secure: false },
   })
 );
 
