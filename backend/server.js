@@ -20,8 +20,18 @@ app.set("trust proxy", 1);
 app.use((req, res, next) => {
   console.log(req.headers);
 
-  console.log(req.headers.origin.includes("localhost"), "@@@@");
-  if (req.headers.origin.includes("localhost")) {
+  const isLocal = [
+    req.headers.origin ?? "",
+    req.headers.host.split(":")[0],
+  ].includes("localhost");
+
+  console.log({
+    isLocal,
+    origin: req.headers.origin ?? "",
+    host: req.headers.host.split(":")[0],
+  });
+
+  if (isLocal) {
     session({
       secret: "test",
       resave: false,
