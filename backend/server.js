@@ -18,8 +18,6 @@ app.use(helmet());
 app.set("trust proxy", 1);
 
 app.use((req, res, next) => {
-  console.log(req.headers);
-
   const isLocal =
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
     req.headers.host.indexOf("localhost") !== -1;
