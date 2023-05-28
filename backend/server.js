@@ -29,6 +29,8 @@ app.use(
   })
 );
 
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/check", (req, res, next) => {
   console.log("/check");
   console.log({
@@ -46,8 +48,9 @@ app.get("/issue", (req, res, next) => {
     "testCookie",
     { message: "test" },
     {
+      secret: "test",
       httpOnly: true,
-      secure: true,
+      secure: process.env.APP_ENV !== "local" ? true : false,
       domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
     }
   );
