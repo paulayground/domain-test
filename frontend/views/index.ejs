@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  hello
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    hello
+    <button onclick="issue()">issue</button>
+    <div id="sessionId"></div>
+    <button onclick="test()">테스트</button>
+  </body>
+  <script>
+    const issue = () => {
+      axios({
+        method: "post",
+        // url: "http://localhost:3002/sign-in",
+        url: "https://paul2.stevelabs.co/issue",
+        // withCredentials: true,
+      })
+        .then((res) => {
+          const sessionId = document.querySelector("#sessionId");
+          console.log(res);
+
+          sessionId.innerHTML = res.data;
+        })
+        .catch((err) => {
+          console.log("@@@@@@@@@@@");
+          console.error(err);
+        });
+    };
+
+    const test = () => {
+      axios({
+        method: "get",
+        url: "https://paul2.stevelabs.co/check",
+        url: "http://localhost:3002/check",
+        // withCredentials: true,
+      })
+        .then((res) => {
+          console.log(res.data.hello);
+        })
+        .catch((err) => console.error(err));
+    };
+    test();
+  </script>
 </html>
