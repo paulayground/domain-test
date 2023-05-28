@@ -15,6 +15,8 @@ app.use(
 
 app.use(helmet());
 
+app.set('trust proxy', 1)
+
 console.log(process.env.APP_ENV, "@@@@@@@@");
 app.use(
   session({
@@ -24,7 +26,7 @@ app.use(
     cookie: {
       httpOnly: true,
       // secure: process.env.APP_ENV !== "local" ? true : false,
-      secure: false,
+      secure: true,
       //   // domain: ".stevelabs.co",
       //   // domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : null,
     },
