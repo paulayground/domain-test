@@ -30,7 +30,7 @@ app.use(
 );
 
 app.get("/check", (req, res, next) => {
-  console.log("/");
+  console.log("/check");
   console.log({
     session: req.session.loginInfo,
   });
