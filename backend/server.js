@@ -46,12 +46,12 @@ app.get("/issue", (req, res, next) => {
     "testCookie",
     { message: "test" },
     {
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: true,
       domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
     }
   );
-  
+
   return res.json(req.session.loginInfo);
 });
 
