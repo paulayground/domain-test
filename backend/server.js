@@ -20,17 +20,30 @@ app.set("trust proxy", 1);
 app.use((req, res, next) => {
   console.log(req.headers);
 
-  console.log(req.ip);
-  session({
-    secret: "test",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.APP_ENV !== "local" ? true : false,
-      domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
-    },
-  })(req, res, next);
+  console.log(req.headers.origin.includes("localhost"), "@@@@");
+  if (req.headers.origin.includes("localhost")) {
+    session({
+      secret: "test",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+        domain: undefined,
+      },
+    })(req, res, next);
+  } else {
+    session({
+      secret: "test",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        domain: ".stevelabs.co",
+      },
+    })(req, res, next);
+  }
 });
 
 app.use(express.urlencoded({ extended: true }));
