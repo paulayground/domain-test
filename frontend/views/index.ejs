@@ -17,8 +17,10 @@
     const issue = () => {
       axios({
         method: "get",
-        url: "http://localhost:4000/issue",
-        // url: "https://paul2.stevelabs.co/issue",
+        url:
+          process.env.APP_ENV !== "local"
+            ? "https://paul2.stevelabs.co/issue"
+            : "http://localhost:4000/issue",
         withCredentials: true,
       })
         .then((res) => {
@@ -36,8 +38,10 @@
     const test = () => {
       axios({
         method: "get",
-        // url: "https://paul2.stevelabs.co/check",
-        url: "http://localhost:4000/check",
+        url:
+          process.env.APP_ENV !== "local"
+            ? "https://paul2.stevelabs.co/check"
+            : "http://localhost:4000/check",
         withCredentials: true,
       })
         .then((res) => {
