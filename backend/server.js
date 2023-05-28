@@ -6,12 +6,12 @@ require("dotenv").config();
 
 const app = express();
 
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: true,
-//   })
-// );
+app.use(
+  cors({
+    credentials: true,
+    origin: ["https://paul1.stevelabs.co, http://localhost:3000"],
+  })
+);
 
 // app.use(helmet());
 
