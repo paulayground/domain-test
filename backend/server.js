@@ -15,7 +15,7 @@ app.use(
 
 app.use(helmet());
 
-app.set('trust proxy', 1)
+app.set("trust proxy", 1);
 
 console.log(process.env.APP_ENV, "@@@@@@@@");
 app.use(
@@ -25,12 +25,9 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      // secure: process.env.APP_ENV !== "local" ? true : false,
-      secure: true,
-      //   // domain: ".stevelabs.co",
-      //   // domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : null,
+      secure: process.env.APP_ENV !== "local" ? true : false,
+      domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
     },
-    // cookie: { httpOnly: true, secure: false },
   })
 );
 
