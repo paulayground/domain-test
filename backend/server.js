@@ -23,7 +23,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.APP_ENV !== "local" ? true : false,
-      domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
+      domain: process.env.APP_ENV !== "local" ? "stevelabs.co" : undefined,
       // sameSite: "none",
     },
   })
@@ -51,7 +51,7 @@ app.get("/issue", (req, res, next) => {
       secret: "test",
       httpOnly: true,
       secure: process.env.APP_ENV !== "local" ? true : false,
-      domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
+      domain: process.env.APP_ENV !== "local" ? "stevelabs.co" : undefined,
     }
   );
 
