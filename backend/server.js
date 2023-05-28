@@ -42,6 +42,16 @@ app.get("/issue", (req, res, next) => {
   console.log("/issue");
   req.session.loginInfo = { hello: 123 };
 
+  res.cookie(
+    "testCookie",
+    { message: "test" },
+    {
+      httpOnly: false,
+      secure: false,
+      domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
+    }
+  );
+  
   return res.json(req.session.loginInfo);
 });
 
