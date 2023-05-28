@@ -15,6 +15,7 @@ app.use(
 
 app.use(helmet());
 
+console.log(process.env.APP_ENV, "@@@@@@@@");
 app.use(
   session({
     secret: "test",
@@ -23,8 +24,8 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.APP_ENV !== "local" ? true : false,
-    //   // domain: ".stevelabs.co",
-    //   // domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : null,
+      //   // domain: ".stevelabs.co",
+      //   // domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : null,
     },
     // cookie: { httpOnly: true, secure: false },
   })
