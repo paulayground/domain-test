@@ -42,7 +42,7 @@ app.get("/issue", (req, res, next) => {
   console.log("/issue");
   req.session.loginInfo = { hello: 123 };
 
-  return res.json(loginInfo);
+  return res.json(req.session.loginInfo);
 });
 
 app.listen(4000, () => {

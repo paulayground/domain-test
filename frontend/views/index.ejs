@@ -17,15 +17,15 @@
     const issue = () => {
       axios({
         method: "get",
-        // url: "http://localhost:3002/sign-in",
-        url: "https://paul2.stevelabs.co/issue",
+        url: "http://localhost:4000/issue",
+        // url: "https://paul2.stevelabs.co/issue",
         withCredentials: true,
       })
         .then((res) => {
           const sessionId = document.querySelector("#sessionId");
           console.log(res);
 
-          sessionId.innerHTML = res.data;
+          sessionId.innerHTML = res.data.hello;
         })
         .catch((err) => {
           console.log("@@@@@@@@@@@");
@@ -36,8 +36,8 @@
     const test = () => {
       axios({
         method: "get",
-        url: "https://paul2.stevelabs.co/check",
-        // url: "http://localhost:3002/check",
+        // url: "https://paul2.stevelabs.co/check",
+        url: "http://localhost:4000/check",
         withCredentials: true,
       })
         .then((res) => {
