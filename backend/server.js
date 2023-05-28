@@ -23,7 +23,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.APP_ENV !== "local" ? true : false,
-      domain: ".stevelabs.co",
+      // domain: ".stevelabs.co",
       // domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : null,
     },
     // cookie: { httpOnly: true, secure: false },
