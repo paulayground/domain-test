@@ -37,7 +37,7 @@ app.use((req, res, next) => {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        secure: false,
+        secure: true,
         domain: undefined,
         sameSite: "none",
       },
