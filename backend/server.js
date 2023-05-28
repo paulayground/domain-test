@@ -26,6 +26,11 @@ app.use((req, res, next) => {
 
   const isBackendLocal = req.headers["user-agent"].indexOf("Postman") !== -1;
 
+  console.log({
+    isLocal,
+    isBackendLocal,
+  });
+
   if (isLocal) {
     session({
       secret: "test",
