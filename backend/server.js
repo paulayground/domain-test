@@ -38,7 +38,8 @@ app.use((req, res, next) => {
       cookie: {
         httpOnly: true,
         secure: false,
-        domain: undefined,
+        // domain: undefined,
+        // sameSite: "none",
       },
     })(req, res, next);
   } else {
@@ -70,16 +71,33 @@ app.get("/issue", (req, res, next) => {
   console.log("/issue");
   req.session.loginInfo = { hello: 123 };
 
-  res.cookie(
-    "testCookie",
-    { message: "test" },
-    {
-      secret: "test",
-      httpOnly: true,
-      secure: process.env.APP_ENV !== "local" ? true : false,
-      domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
-    }
-  );
+  const isLocal =
+    (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
+    req.headers.host.indexOf("localhost") !== -1;
+
+  if (isLocal) {
+    res.cookie(
+      "testCookie",
+      { message: "test" },
+      {
+        secret: "test",
+        httpOnly: true,
+        secure: false,
+        domain: undefined,
+      }
+    );
+  } else {
+    res.cookie(
+      "testCookie",
+      { message: "test" },
+      {
+        secret: "test",
+        httpOnly: true,
+        secure: true,
+        domain: ".stevelabs.co",
+      }
+    );
+  }
 
   return res.json(req.session.loginInfo);
 });
