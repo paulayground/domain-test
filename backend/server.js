@@ -9,11 +9,11 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: ["https://paul1.stevelabs.co, http://localhost:3000"],
+    origin: ["https://paul1.stevelabs.co", "http://localhost:3000"],
   })
 );
 
-// app.use(helmet());
+app.use(helmet());
 
 app.use(
   session({
