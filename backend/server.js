@@ -20,15 +20,14 @@ app.set("trust proxy", 1);
 app.use((req, res, next) => {
   console.log(req.headers);
 
-  const isLocal = [
-    req.headers.origin ?? "",
-    req.headers.host.split(":")[0],
-  ].includes("localhost");
+  const isLocal =
+    (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
+    req.headers.host.indexOf("localhost") !== -1;
 
   console.log({
     isLocal,
     origin: req.headers.origin ?? "",
-    host: req.headers.host.split(":")[0],
+    host: req.headers.host,
   });
 
   if (isLocal) {
