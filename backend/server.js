@@ -38,8 +38,8 @@ app.use((req, res, next) => {
       cookie: {
         httpOnly: true,
         secure: false,
-        // domain: undefined,
-        // sameSite: "none",
+        domain: undefined,
+        sameSite: "none",
       },
     })(req, res, next);
   } else {
