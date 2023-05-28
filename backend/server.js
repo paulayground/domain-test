@@ -24,11 +24,7 @@ app.use((req, res, next) => {
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
     req.headers.host.indexOf("localhost") !== -1;
 
-  console.log({
-    isLocal,
-    origin: req.headers.origin ?? "",
-    host: req.headers.host,
-  });
+  const isBackendLocal = req.headers["user-agent"].indexOf("Postman") !== -1;
 
   if (isLocal) {
     session({
@@ -37,9 +33,8 @@ app.use((req, res, next) => {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        secure: true,
-        domain: undefined,
-        sameSite: "none",
+        secure: isBackendLocal ? false : true,
+        sameSite: isBackendLocal ? undefined : "none",
       },
     })(req, res, next);
   } else {
@@ -75,6 +70,8 @@ app.get("/issue", (req, res, next) => {
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
     req.headers.host.indexOf("localhost") !== -1;
 
+  const isBackendLocal = req.headers["user-agent"].indexOf("Postman") !== -1;
+
   if (isLocal) {
     res.cookie(
       "testCookie",
@@ -82,8 +79,8 @@ app.get("/issue", (req, res, next) => {
       {
         secret: "test",
         httpOnly: true,
-        secure: false,
-        domain: undefined,
+        secure: isBackendLocal ? false : true,
+        sameSite: isBackendLocal ? undefined : "none",
       }
     );
   } else {
