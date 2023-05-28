@@ -17,8 +17,10 @@ app.use(helmet());
 
 app.set("trust proxy", 1);
 
-console.log(process.env.APP_ENV, "@@@@@@@@");
-app.use(
+app.use((req, res, next) => {
+  console.log(req.headers);
+
+  console.log(req.ip);
   session({
     secret: "test",
     resave: false,
@@ -28,8 +30,8 @@ app.use(
       secure: process.env.APP_ENV !== "local" ? true : false,
       domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : undefined,
     },
-  })
-);
+  })(req, res, next);
+});
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -60,6 +62,6 @@ app.get("/issue", (req, res, next) => {
   return res.json(req.session.loginInfo);
 });
 
-app.listen(4000, () => {
+app.listen(4000, "0.0.0.0", () => {
   console.log("server start", new Date());
 });
