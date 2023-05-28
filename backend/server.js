@@ -20,13 +20,13 @@ app.use(
     secret: "test",
     resave: false,
     saveUninitialized: false,
-    // cookie: {
-    //   httpOnly: true,
-    //   secure: process.env.APP_ENV !== "local" ? true : false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.APP_ENV !== "local" ? true : false,
     //   // domain: ".stevelabs.co",
     //   // domain: process.env.APP_ENV !== "local" ? ".stevelabs.co" : null,
-    // },
-    cookie: { httpOnly: true, secure: false },
+    },
+    // cookie: { httpOnly: true, secure: false },
   })
 );
 
