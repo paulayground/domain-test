@@ -22,6 +22,8 @@ app.use((req, res, next) => {
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
     req.headers.host.indexOf("localhost") !== -1;
 
+  console.log({ origin: req.headers.origin ?? "", host: req.headers.host });
+
   if (isLocalRequest) {
     session({
       secret: "test",
