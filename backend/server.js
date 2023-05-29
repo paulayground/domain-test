@@ -26,10 +26,10 @@ const cookieOptions = {
 app.use((req, res, next) => {
   const isLocalRequest =
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
-    req.headers.host.indexOf("localhost") !== -1;
+    (req.headers.host ?? "").indexOf("localhost") !== -1;
 
   const isBackendLocalRequest =
-    req.headers["user-agent"].indexOf("Postman") !== -1;
+    (req.headers["user-agent"] ?? "").indexOf("Postman") !== -1;
 
   console.log({
     isLocalRequest,
@@ -37,8 +37,9 @@ app.use((req, res, next) => {
   });
 
   if (isLocalRequest) {
-    cookieOptions.secure = isBackendLocalRequest ? false : true;
-    cookieOptions.sameSite = isBackendLocalRequest ? undefined : "none";
+    // cookieOptions.secure = isBackendLocalRequest ? false : true;
+    // cookieOptions.sameSite = isBackendLocalRequest ? undefined : "none";
+    cookieOptions.secure = true;
   } else {
     cookieOptions.secure = true;
     cookieOptions.domain = ".stevelabs.co";
