@@ -53,6 +53,8 @@ app.use((req, res, next) => {
     sessionOptions.cookie.domain = ".stevelabs.co";
   }
 
+  console.log(sessionOptions);
+
   next();
 });
 
