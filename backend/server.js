@@ -17,17 +17,19 @@ app.use(cookieParser());
 
 app.set("trust proxy", 1);
 
-// app.use(
-//   session({
-//     secret: "test",
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       httpOnly: true,
-//       secure: false,
-//     },
-//   })
-// );
+const sessionOptions = {
+  secret: "test",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false, // 초기값 설정
+    sameSite: undefined, // 초기값 설정
+    domain: undefined, // 초기값 설정
+  },
+};
+
+app.use(session(sessionOptions));
 
 app.use((req, res, next) => {
   const isLocal =
@@ -41,33 +43,58 @@ app.use((req, res, next) => {
     isBackendLocal,
   });
 
-  let sessionOptions = {};
   if (isLocal) {
-    sessionOptions = {
-      secret: "test",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: false,
-        sameSite: isBackendLocal ? undefined : "none",
-      },
-    };
+    sessionOptions.cookie.secure = isBackendLocal ? false : true;
+    sessionOptions.cookie.sameSite = isBackendLocal ? undefined : "none";
+    sessionOptions.cookie.domain = "localhost";
   } else {
-    sessionOptions = {
-      secret: "test",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: true,
-        domain: ".stevelabs.co",
-      },
-    };
+    sessionOptions.cookie.secure = true;
+    sessionOptions.cookie.sameSite = "none";
+    sessionOptions.cookie.domain = ".stevelabs.co";
   }
 
-  session(sessionOptions)(req, res, next);
+  next();
 });
+
+// app.use((req, res, next) => {
+//   const isLocal =
+//     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
+//     req.headers.host.indexOf("localhost") !== -1;
+
+//   const isBackendLocal = req.headers["user-agent"].indexOf("Postman") !== -1;
+
+//   console.log({
+//     isLocal,
+//     isBackendLocal,
+//   });
+
+//   let sessionOptions = {};
+//   if (isLocal) {
+//     sessionOptions = {
+//       secret: "test",
+//       resave: false,
+//       saveUninitialized: false,
+//       cookie: {
+//         httpOnly: true,
+//         secure: false,
+//         sameSite: isBackendLocal ? undefined : "none",
+//       },
+//     };
+//   } else {
+//     sessionOptions = {
+//       secret: "test",
+//       resave: false,
+//       saveUninitialized: false,
+//       cookie: {
+//         httpOnly: true,
+//         secure: true,
+//         domain: ".stevelabs.co",
+//       },
+//     };
+//   }
+
+//   session(sessionOptions)(req, res, next);
+// });
 
 app.use(express.urlencoded({ extended: true }));
 
