@@ -17,47 +17,36 @@ app.use(cookieParser());
 
 app.set("trust proxy", 1);
 
-const sessionOptions = {
-  secret: "test",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: false, // 초기값 설정
-    sameSite: undefined, // 초기값 설정
-    domain: undefined, // 초기값 설정
-  },
-};
-
 app.use((req, res, next) => {
-  const isLocal =
+  const isLocalRequest =
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
     req.headers.host.indexOf("localhost") !== -1;
 
-  const isBackendLocal = req.headers["user-agent"].indexOf("Postman") !== -1;
-
-  console.log({
-    isLocal,
-    isBackendLocal,
-  });
-
-  if (isLocal) {
-    sessionOptions.cookie.secure = isBackendLocal ? false : true;
-    sessionOptions.cookie.sameSite = isBackendLocal ? undefined : "none";
-    sessionOptions.cookie.domain = "localhost";
+  if (isLocalRequest) {
+    session({
+      secret: "test",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+        sameSite: undefined,
+      },
+    })(req, res, next);
   } else {
-    sessionOptions.cookie.secure = true;
-    // 이거 뭐더라
-    sessionOptions.cookie.sameSite = "none";
-    sessionOptions.cookie.domain = ".stevelabs.co";
+    session({
+      secret: "test",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        domain: ".stevelabs.co",
+      },
+    })(req, res, next);
   }
-
-  console.log(sessionOptions);
-
-  next();
 });
-
-app.use(session(sessionOptions));
 
 // app.use((req, res, next) => {
 //   const isLocal =
