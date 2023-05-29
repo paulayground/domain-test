@@ -47,14 +47,17 @@ app.use((req, res, next) => {
     sessionOptions.cookie.domain = "localhost";
   } else {
     sessionOptions.cookie.secure = true;
+    // 이거 뭐더라
     sessionOptions.cookie.sameSite = "none";
     sessionOptions.cookie.domain = ".stevelabs.co";
   }
 
   console.log(sessionOptions);
 
-  session(sessionOptions)(req, res, next);
+  next();
 });
+
+app.use(session(sessionOptions));
 
 // app.use((req, res, next) => {
 //   const isLocal =
