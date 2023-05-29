@@ -21,6 +21,7 @@ const cookieOptions = {
   httpOnly: true,
   secure: false,
   sameSite: undefined,
+  domain: undefined,
 };
 
 app.use((req, res, next) => {
@@ -37,9 +38,10 @@ app.use((req, res, next) => {
   });
 
   if (isLocalRequest) {
-    // cookieOptions.secure = isBackendLocalRequest ? false : true;
-    // cookieOptions.sameSite = isBackendLocalRequest ? undefined : "none";
-    cookieOptions.secure = true;
+    cookieOptions.secure = isBackendLocalRequest ? false : true;
+    cookieOptions.sameSite = isBackendLocalRequest ? undefined : "none";
+    cookieOptions.domain = undefined;
+    // cookieOptions.secure = true;
   } else {
     cookieOptions.secure = true;
     cookieOptions.domain = ".stevelabs.co";
