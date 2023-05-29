@@ -17,38 +17,44 @@ app.use(cookieParser());
 
 app.set("trust proxy", 1);
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: false,
+  sameSite: undefined,
+};
+
 app.use((req, res, next) => {
   const isLocalRequest =
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
     req.headers.host.indexOf("localhost") !== -1;
 
-  console.log({ origin: req.headers.origin ?? "", host: req.headers.host });
+  const isBackendLocalRequest =
+    req.headers["user-agent"].indexOf("Postman") !== -1;
+
+  console.log({
+    isLocalRequest,
+    isBackendLocalRequest,
+  });
 
   if (isLocalRequest) {
-    session({
-      secret: "test",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: false,
-        sameSite: undefined,
-      },
-    })(req, res, next);
+    cookieOptions.secure = isBackendLocalRequest ? false : true;
+    cookieOptions.sameSite = isBackendLocalRequest ? undefined : "none";
   } else {
-    session({
-      secret: "test",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        domain: ".stevelabs.co",
-      },
-    })(req, res, next);
+    cookieOptions.secure = true;
+    cookieOptions.domain = ".stevelabs.co";
   }
+
+  next();
 });
+
+app.use(
+  session({
+    secret: "test",
+    resave: false,
+    saveUninitialized: false,
+    cookie: cookieOptions,
+  })
+);
 
 // app.use((req, res, next) => {
 //   const isLocal =
