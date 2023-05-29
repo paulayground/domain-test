@@ -29,8 +29,6 @@ const sessionOptions = {
   },
 };
 
-app.use(session(sessionOptions));
-
 app.use((req, res, next) => {
   const isLocal =
     (req.headers.origin ?? "").indexOf("localhost") !== -1 ||
@@ -55,7 +53,7 @@ app.use((req, res, next) => {
 
   console.log(sessionOptions);
 
-  next();
+  session(sessionOptions)(req, res, next);
 });
 
 // app.use((req, res, next) => {
