@@ -17,19 +17,17 @@ app.use(cookieParser());
 
 app.set("trust proxy", 1);
 
-const sessionOptions = {
-  secret: "test",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: false, // 초기값 설정
-    sameSite: undefined, // 초기값 설정
-    domain: undefined, // 초기값 설정
-  },
-};
-
-app.use(session(sessionOptions));
+// app.use(
+//   session({
+//     secret: "test",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       httpOnly: true,
+//       secure: false,
+//     },
+//   })
+// );
 
 app.use((req, res, next) => {
   const isLocal =
@@ -43,12 +41,29 @@ app.use((req, res, next) => {
     isBackendLocal,
   });
 
+  let sessionOptions = {};
   if (isLocal) {
-    sessionOptions.cookie.secure = isBackendLocal ? false : true;
-    sessionOptions.cookie.sameSite = isBackendLocal ? undefined : "none";
+    sessionOptions = {
+      secret: "test",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+        sameSite: isBackendLocal ? undefined : "none",
+      },
+    };
   } else {
-    sessionOptions.cookie.secure = true;
-    sessionOptions.cookie.domain = ".stevelabs.co";
+    sessionOptions = {
+      secret: "test",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        domain: ".stevelabs.co",
+      },
+    };
   }
 
   session(sessionOptions)(req, res, next);
@@ -61,7 +76,8 @@ app.use(helmet());
 app.get("/check", (req, res, next) => {
   console.log("/check");
   console.log({
-    session: req.session.loginInfo,
+    sessionId: req.sessionID,
+    sessionData: req.session.loginInfo,
     cookie: req.headers.cookie,
   });
 
@@ -101,8 +117,6 @@ app.get("/issue", (req, res, next) => {
       }
     );
   }
-
-  console.log(req.session);
 
   res.json(req.session.loginInfo);
 });
